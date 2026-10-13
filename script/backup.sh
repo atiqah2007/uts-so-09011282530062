@@ -27,3 +27,6 @@ tar -tzvf "$TUJUAN/$NAMA_ARSIP"
 # ===== Catat tepat satu baris ke log (>> menambah, tidak menimpa) =====
 UKURAN=$(LC_ALL=C du -h "$TUJUAN/$NAMA_ARSIP" | cut -f1)
 echo "$(date '+%Y-%m-%d %H:%M:%S') | $NAMA_ARSIP | $JUMLAH | $UKURAN" >> "$LOG"
+# ===== Rotasi: simpan 5 arsip terbaru, hapus yang lebih lama =====
+MAKS_ARSIP=5
+ls -1t "$TUJUAN"/backup_"$NIM"_*.tar.gz | tail -n +$((MAKS_ARSIP + 1)) | xargs -r rm -f
