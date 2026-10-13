@@ -14,5 +14,16 @@ mkdir -p "$TUJUAN"
 # ===== Cari semua file .txt (termasuk subdirektori), simpan daftarnya =====
 (cd "$SUMBER" && find . -type f -name "*.txt") > "$DAFTAR"
 JUMLAH=$(wc -l < "$DAFTAR")
-echo "Ditemukan $JUMLAH file .txt:"
-cat "$DAFTAR"
+
+# ===== Buat arsip .tar.gz, hanya berisi file hasil find =====
+WAKTU=$(date +%Y%m%d_%H%M%S)
+NAMA_ARSIP="backup_${NIM}_${WAKTU}.tar.gz"
+tar -czvf "$TUJUAN/$NAMA_ARSIP" -C "$SUMBER" -T "$DAFTAR"
+
+# ===== Verifikasi: tampilkan isi arsip tanpa mengekstrak =====
+echo "--- Isi arsip $NAMA_ARSIP ---"
+tar -tzvf "$TUJUAN/$NAMA_ARSIP"
+
+# ===== Catat tepat satu baris ke log (>> menambah, tidak menimpa) =====
+UKURAN=$(LC_ALL=C du -h "$TUJUAN/$NAMA_ARSIP" | cut -f1)
+echo "$(date '+%Y-%m-%d %H:%M:%S') | $NAMA_ARSIP | $JUMLAH | $UKURAN" >> "$LOG"
