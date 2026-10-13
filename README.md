@@ -37,6 +37,22 @@ Hasilnya hanya ada 5 file `.tar.gz`.
 
 ## Bukti job control
 ```
+ ./backup_loop.sh 5 > /dev/null &
+[1] 2226
+atiqah@atiqah-VirtualBox:~/uts-so-09011282530062/script$ jobs -l
+[1]+  2226 Berjalan                ./backup_loop.sh 5 > /dev/null &
+atiqah@atiqah-VirtualBox:~/uts-so-09011282530062/script$ fg
+./backup_loop.sh 5 > /dev/null
+^Z
+[1]+  Terhenti                ./backup_loop.sh 5 > /dev/null
+atiqah@atiqah-VirtualBox:~/uts-so-09011282530062/script$ bg
+[1]+ ./backup_loop.sh 5 > /dev/null &
+atiqah@atiqah-VirtualBox:~/uts-so-09011282530062/script$ ps x | grep backup_loop
+   2226 pts/0    S      0:00 /bin/bash ./backup_loop.sh 5
+   2391 pts/0    S+     0:00 grep --color=auto backup_loop
+atiqah@atiqah-VirtualBox:~/uts-so-09011282530062/script$ kill %1
+atiqah@atiqah-VirtualBox:~/uts-so-09011282530062/script$ jobs -l
+[1]+  2226 Terakhiri               ./backup_loop.sh 5 > /dev/null
 
 ```
 
